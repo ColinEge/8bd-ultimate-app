@@ -1,0 +1,17 @@
+# Place in /etc/udev/rules.d/
+
+### Standard keyboard ###
+
+# Allow logged in users to read/write the device
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="5200", MODE="0660", TAG+="uaccess"
+
+# Unbind usbhid from interface #2 so that python can use the interface
+ACTION=="bind", SUBSYSTEM=="usb", ATTR{bInterfaceNumber}=="02", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="5200", RUN+="/usr/bin/sh -c 'echo $kernel > /sys/bus/usb/drivers/usbhid/unbind'"
+
+### 108 Key keyboard ###
+
+# Allow logged in users to read/write the device
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="5209", MODE="0660", TAG+="uaccess"
+
+# Unbind usbhid from interface #2 so that we can use the interface
+ACTION=="bind", SUBSYSTEM=="usb", ATTR{bInterfaceNumber}=="02", ATTRS{idVendor}=="2dc8", ATTRS{idProduct}=="5209", RUN+="/usr/bin/sh -c 'echo $kernel > /sys/bus/usb/drivers/usbhid/unbind'"

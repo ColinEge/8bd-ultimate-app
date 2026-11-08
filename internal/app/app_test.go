@@ -27,12 +27,12 @@ func TestAppSelectionAndRebinding(t *testing.T) {
 		}
 	})
 	for name, operation := range map[string]func() error{
-		"selected device": func() error { _, err := a.GetSelectedDevice(); return err },
-		"actions":         func() error { _, err := a.GetActions(); return err },
-		"read":            func() error { _, err := a.GetBinding(4); return err },
-		"bind":            func() error { _, err := a.BindAction(4, "07-00-05"); return err },
-		"disable":         func() error { _, err := a.DisableKey(4); return err },
-		"restore":         func() error { _, err := a.RestoreKey(4); return err },
+		"selected device":  func() error { _, err := a.GetSelectedDevice(); return err },
+		"actions":          func() error { _, err := a.GetActions(); return err },
+		"read":             func() error { _, err := a.GetBinding(4); return err },
+		"bind":             func() error { _, err := a.BindAction(4, "07-00-05"); return err },
+		"disable":          func() error { _, err := a.DisableKey(4); return err },
+		"reset-to-default": func() error { _, err := a.ResetToDefault(4); return err },
 	} {
 		if err := operation(); err == nil {
 			t.Fatalf("%s succeeded without selection", name)

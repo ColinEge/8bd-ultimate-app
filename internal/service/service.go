@@ -128,9 +128,9 @@ func (s *EightBitDoService) DisableKey(ctx context.Context, id client.DeviceID, 
 	})
 }
 
-func (s *EightBitDoService) RestoreKey(ctx context.Context, id client.DeviceID, key uint8) (*Key, error) {
+func (s *EightBitDoService) ResetToDefault(ctx context.Context, id client.DeviceID, key uint8) (*Key, error) {
 	return s.withBinding(ctx, id, key, func(k client.Keyboard) error {
-		return k.Restore(ctx, client.KeyID(key))
+		return k.ResetToDefault(ctx, client.KeyID(key))
 	})
 }
 

@@ -318,7 +318,7 @@ func (a *App) GetProfileLayout(title string) (map[string]service.Key, error) {
 }
 
 // Each edit persists locally first. Active edits also write only the changed key.
-func (a *App) UpdateProfileBinding(title string, key uint8, action string, restore bool) (map[string]service.Key, error) {
+func (a *App) UpdateProfileBinding(title string, key uint8, action string, resetToDefault bool) (map[string]service.Key, error) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	store, err := a.modelStore()
@@ -333,7 +333,7 @@ func (a *App) UpdateProfileBinding(title string, key uint8, action string, resto
 		return nil, err
 	}
 	var parsed client.Action
-	if !restore {
+	if !resetToDefault {
 		parsed, err = client.ParseAction(action)
 		if err != nil {
 			return nil, err
@@ -352,7 +352,7 @@ func (a *App) UpdateProfileBinding(title string, key uint8, action string, resto
 			changes = append(changes, change)
 		}
 	}
-	if !restore {
+	if !resetToDefault {
 		changes = append(changes, client.BindingChange{Key: client.KeyID(key), Action: parsed})
 	}
 	p.Keys = changes
@@ -361,8 +361,8 @@ func (a *App) UpdateProfileBinding(title string, key uint8, action string, resto
 	}
 	if active == title {
 		var readBack *service.Key
-		if restore {
-			readBack, err = a.service.RestoreKey(a.ctx, a.selectedDevice, key)
+		if resetToDefault {
+			readBack, err = a.service.ResetToDefault(a.ctx, a.selectedDevice, key)
 		} else {
 			readBack, err = a.service.BindAction(a.ctx, a.selectedDevice, key, action)
 		}
@@ -374,7 +374,7 @@ func (a *App) UpdateProfileBinding(title string, key uint8, action string, resto
 			return nil, fmt.Errorf("profile saved and key written, but layout refresh failed: %w", err)
 		}
 		expected := parsed.String()
-		if restore {
+		if resetToDefault {
 			expected = layout[readBack.ID].ActionCode
 		}
 		if readBack.ActionCode != expected {

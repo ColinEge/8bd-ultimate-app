@@ -40,7 +40,7 @@ Unplug and reconnect the keyboard after installing the rules.
 3. Choose **New profile** to create an empty profile or copy the keyboard's
    current bindings.
 4. Open a profile's three-dot menu and choose **Edit profile**. Select a key,
-   then **Rebind**, **Disable**, or **Restore default**.
+   then **Rebind**, **Disable**, or **Reset to default**.
 5. Choose **Set as active** to apply a saved profile to the keyboard.
 
 Edits save immediately. Inactive profile edits will not modify the keyboard;
@@ -51,7 +51,7 @@ Renaming or deleting an active profile also updates the keyboard's profile title
 Back up your configuration before changing it. Writes have no rollback or
 automatic retry. If an operation fails, use **Refresh profile** in the editor
 or **Refresh** in the profile list before deciding whether to retry.
-Macros and Super A/B configuration are not currently supported.
+Super A/B support key binding edits; macros are not currently supported.
 
 Profiles are stored locally and grouped by keyboard model. Under
 **Profile storage**, **Choose folder** changes the storage location and

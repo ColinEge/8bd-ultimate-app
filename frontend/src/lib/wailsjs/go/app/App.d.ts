@@ -36,7 +36,7 @@ export function RenameProfile(arg1:string,arg2:string):Promise<void>;
 
 export function ResetProfileDirectory():Promise<string>;
 
-export function RestoreKey(arg1:number):Promise<service.Key>;
+export function ResetToDefault(arg1:number):Promise<service.Key>;
 
 export function SaveProfile(arg1:service.Profile):Promise<void>;
 

@@ -114,11 +114,11 @@ func (a *App) DisableKey(key uint8) (*service.Key, error) {
 	return a.service.DisableKey(a.ctx, a.selectedDevice, key)
 }
 
-func (a *App) RestoreKey(key uint8) (*service.Key, error) {
+func (a *App) ResetToDefault(key uint8) (*service.Key, error) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	if err := a.requireSelection(); err != nil {
 		return nil, err
 	}
-	return a.service.RestoreKey(a.ctx, a.selectedDevice, key)
+	return a.service.ResetToDefault(a.ctx, a.selectedDevice, key)
 }

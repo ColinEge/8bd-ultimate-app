@@ -129,8 +129,10 @@ func TestSingleKeyWorkflow(t *testing.T) {
 	}{
 		{"bind", 4, client.ActionB(), client.ActionB(), "action", "07-00-05"},
 		{"disable", 4, client.ActionDisabled(), client.ActionDisabled(), "disabled", "07-00-00"},
-		{"restore Ctrl", 0x64, client.ActionLeftCtrl(), client.Action{}, "default", "07-e0-00"},
-		{"restore Shift explicit default", 0x65, client.ActionLeftShift(), client.ActionLeftShift(), "action", "07-e1-00"},
+		{"reset Ctrl to default", 0x64, client.ActionLeftCtrl(), client.Action{}, "default", "07-e0-00"},
+		{"reset Shift to explicit default", 0x65, client.ActionLeftShift(), client.ActionLeftShift(), "action", "07-e1-00"},
+		{"reset Super B to default", 0x6c, client.Action{7, 0xe8, 0}, client.Action{}, "default", "07-e8-00"},
+		{"reset Super A to explicit default", 0x6d, client.Action{7, 0xe9, 0}, client.Action{7, 0xe9, 0}, "action", "07-e9-00"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			s, f := fixtureService(t)
@@ -147,7 +149,7 @@ func TestSingleKeyWorkflow(t *testing.T) {
 			case "disable":
 				key, err = s.DisableKey(ctx, f.Device.ID, tt.key)
 			default:
-				key, err = s.RestoreKey(ctx, f.Device.ID, tt.key)
+				key, err = s.ResetToDefault(ctx, f.Device.ID, tt.key)
 			}
 			if err != nil {
 				t.Fatal(err)

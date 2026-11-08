@@ -120,7 +120,7 @@ func TestActiveAndInactiveProfileEdits(t *testing.T) {
 			}
 			layout, err = a.UpdateProfileBinding("Work", 4, "", true)
 			if err != nil || layout["0x04"].ActionCode != "07-00-04" {
-				t.Fatalf("restore=%v, %v", layout, err)
+				t.Fatalf("reset to default=%v, %v", layout, err)
 			}
 			list, err = a.ListProfiles()
 			if err != nil || len(list[0].Keys) != 0 {

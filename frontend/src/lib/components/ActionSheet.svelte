@@ -31,15 +31,15 @@
     }).catch((e: unknown) => { error = String(e); });
   });
 
-  async function change(operation: "bind" | "disable" | "restore") {
+  async function change(operation: "bind" | "disable" | "reset-to-default") {
     if (selectedID === undefined || busy) return;
     const id = selectedID;
     busy = true;
-    progress = `${operation === "bind" ? "Rebinding" : operation === "disable" ? "Disabling" : "Restoring"} ${currentKey?.keyLabel ?? "key"}... Saving profile changes.`;
+    progress = `${operation === "bind" ? "Rebinding" : operation === "disable" ? "Disabling" : "Resetting to default:"} ${currentKey?.keyLabel ?? "key"}... Saving profile changes.`;
     error = "";
     try {
       const layout = await UpdateProfileBinding(profileTitle, id,
-        operation === "disable" ? "07-00-00" : action, operation === "restore");
+        operation === "disable" ? "07-00-00" : action, operation === "reset-to-default");
       onUpdate(layout);
     } catch (e) {
       error = String(e);
@@ -84,7 +84,7 @@
       </select>
       <button class="button button-primary" onclick={() => change("bind")} disabled={busy || !action}>Rebind</button>
       <button class="button button-destructive" onclick={() => change("disable")} disabled={busy}>Disable</button>
-      <button class="button button-secondary" onclick={() => change("restore")} disabled={busy}>Restore default</button>
+      <button class="button button-secondary" onclick={() => change("reset-to-default")} disabled={busy}>Reset to default</button>
     </div>
   </div>
 {/if}

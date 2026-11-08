@@ -70,8 +70,8 @@ export function ResetProfileDirectory() {
   return window['go']['app']['App']['ResetProfileDirectory']();
 }
 
-export function RestoreKey(arg1) {
-  return window['go']['app']['App']['RestoreKey'](arg1);
+export function ResetToDefault(arg1) {
+  return window['go']['app']['App']['ResetToDefault'](arg1);
 }
 
 export function SaveProfile(arg1) {

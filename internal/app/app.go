@@ -9,7 +9,7 @@ import (
 
 	"github.com/ColinEge/8bd-ultimate-api/client"
 	"github.com/ColinEge/8bd-ultimate-api/profiles"
-	"github.com/ColinEge/8bd-ultimate-appgithub.com/ColinEge/8bitdo-ultimate-app/internal/service"
+	"github.com/ColinEge/8bd-ultimate-app/internal/service"
 )
 
 type App struct {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/ColinEge/8bd-ultimate-api/client"
 	"github.com/ColinEge/8bd-ultimate-api/test/fixtures/keyboard"
-	"github.com/ColinEge/8bd-ultimate-appgithub.com/ColinEge/8bitdo-ultimate-app/internal/service"
+	"github.com/ColinEge/8bd-ultimate-app/internal/service"
 )
 
 func TestAppSelectionAndRebinding(t *testing.T) {

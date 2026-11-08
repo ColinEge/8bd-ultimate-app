@@ -10,7 +10,7 @@ import (
 
 	"github.com/ColinEge/8bd-ultimate-api/client"
 	"github.com/ColinEge/8bd-ultimate-api/profiles"
-	"github.com/ColinEge/8bd-ultimate-appgithub.com/ColinEge/8bitdo-ultimate-app/internal/service"
+	"github.com/ColinEge/8bd-ultimate-app/internal/service"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -207,7 +207,19 @@ func (a *App) DeleteProfile(title string) error {
 	if err != nil {
 		return err
 	}
-	return store.Delete(title)
+	active, err := a.service.GetProfileName(a.ctx, a.selectedDevice)
+	if err != nil {
+		return err
+	}
+	if err := store.Delete(title); err != nil {
+		return err
+	}
+	if active == title {
+		if err := a.service.DeleteProfile(a.ctx, a.selectedDevice); err != nil {
+			return fmt.Errorf("local profile deleted, but device profile deletion failed: %w", err)
+		}
+	}
+	return nil
 }
 
 // Capture creates a new local profile without changing the device title.

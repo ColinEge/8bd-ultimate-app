@@ -92,6 +92,7 @@ func (s *EightBitDoService) ProfileLayout(ctx context.Context, id client.DeviceI
 			key := displayKey(k, client.Binding{Key: entry.ID, State: client.BindingDefault, Effective: entry.Default})
 			keys[key.ID] = key
 		}
+
 		for _, change := range profile.Keys {
 			state := client.BindingAction
 			if change.Action == client.ActionDisabled() {
@@ -103,4 +104,20 @@ func (s *EightBitDoService) ProfileLayout(ctx context.Context, id client.DeviceI
 		return nil
 	})
 	return keys, err
+}
+
+func (s *EightBitDoService) DeleteProfile(ctx context.Context, id client.DeviceID) error {
+	return s.client.WithKeyboard(ctx, id, func(k client.Keyboard) error {
+		if err := k.DeleteProfile(ctx); err != nil {
+			return fmt.Errorf("device profile deletion failed; refresh before retrying: %w", err)
+		}
+		title, err := k.GetProfile(ctx)
+		if err != nil {
+			return fmt.Errorf("deletion acknowledged but profile read-back failed: %w", err)
+		}
+		if title != "" {
+			return fmt.Errorf("device profile deletion read-back returned %q, expected no title", title)
+		}
+		return nil
+	})
 }

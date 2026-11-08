@@ -9,7 +9,7 @@ import (
 	"github.com/ColinEge/8bd-ultimate-api/client"
 	"github.com/ColinEge/8bd-ultimate-api/profiles"
 	"github.com/ColinEge/8bd-ultimate-api/test/fixtures/keyboard"
-	"github.com/ColinEge/8bd-ultimate-appgithub.com/ColinEge/8bitdo-ultimate-app/internal/service"
+	"github.com/ColinEge/8bd-ultimate-app/internal/service"
 )
 
 func editFixture(t *testing.T) (*App, *keyboard.KeyboardFixture) {
@@ -47,6 +47,46 @@ func titleExchange(title string) keyboard.Exchange {
 	return keyboard.Exchange{Write: editPacket(0x52, 0x80), Response: p}
 }
 
+func TestDeleteActiveAndInactiveProfile(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		active   string
+		reply    []byte
+		readBack string
+		wantErr  bool
+	}{
+		{"inactive", "Other", nil, "", false},
+		{"active", "Work", []byte{0x54, 0xe4, 8}, "", false},
+		{"rejected", "Work", []byte{0x54, 0xe4, 9}, "", true},
+		{"read-back mismatch", "Work", []byte{0x54, 0xe4, 8}, "Work", true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			a, f := editFixture(t)
+			if err := a.CreateProfile("Work"); err != nil {
+				t.Fatal(err)
+			}
+			f.Exchanges = []keyboard.Exchange{titleExchange(tt.active)}
+			if tt.active == "Work" {
+				f.Exchanges = append(f.Exchanges, keyboard.Exchange{Write: editPacket(0x52, 0x70, 0, 0), Response: tt.reply})
+				if tt.reply[2] == 8 {
+					f.Exchanges = append(f.Exchanges, titleExchange(tt.readBack))
+				}
+			}
+			err := a.DeleteProfile("Work")
+			if tt.wantErr {
+				if err == nil || !strings.Contains(err.Error(), "local profile deleted") {
+					t.Fatalf("partial outcome: %v", err)
+				}
+			} else if err != nil {
+				t.Fatal(err)
+			}
+			list, err := a.ListProfiles()
+			if err != nil || len(list) != 0 {
+				t.Fatalf("file not deleted: %v, %v", list, err)
+			}
+		})
+	}
+}
 func TestActiveAndInactiveProfileEdits(t *testing.T) {
 	for _, active := range []bool{false, true} {
 		t.Run(map[bool]string{false: "inactive", true: "active"}[active], func(t *testing.T) {

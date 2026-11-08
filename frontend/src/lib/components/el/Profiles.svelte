@@ -137,7 +137,9 @@
                     </fieldset>
                 {/if}
                 {#if deleting === profile.title}
-                    <p>Delete "{profile.title}" locally? The keyboard stays unchanged.</p>
+                    <p>Delete "{profile.title}"? {profile.title === active
+                        ? "This also clears the active profile on the keyboard."
+                        : "Only the local file will be deleted."}</p>
                     <button class="button button-destructive" disabled={busy} onclick={() => run(async () => {
                         await DeleteProfile(profile.title); deleting = ""; await load();
                     })}>Confirm delete</button>

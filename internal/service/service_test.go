@@ -99,7 +99,10 @@ func TestLayout(t *testing.T) {
 	if a.PhysicalKey != 4 || a.KeyLabel != "A" || a.ActionCode != "07-00-05" || a.BindingState != "action" {
 		t.Fatalf("A remapped to B: %+v", a)
 	}
-	for id, action := range map[string]string{"0x64": "07-e0-00", "0x65": "07-e1-00", "0x28": "07-00-28"} {
+	for id, action := range map[string]string{
+		"0x64": "07-e0-00", "0x65": "07-e1-00", "0x28": "07-00-28",
+		"0xe8": "07-e8-00", "0xe9": "07-e9-00",
+	} {
 		key, ok := kbd.Keys[id]
 		if !ok || key.ActionCode != action || key.BindingState != "default" {
 			t.Fatalf("default %s: %+v", id, key)
@@ -131,8 +134,8 @@ func TestSingleKeyWorkflow(t *testing.T) {
 		{"disable", 4, client.ActionDisabled(), client.ActionDisabled(), "disabled", "07-00-00"},
 		{"reset Ctrl to default", 0x64, client.ActionLeftCtrl(), client.Action{}, "default", "07-e0-00"},
 		{"reset Shift to explicit default", 0x65, client.ActionLeftShift(), client.ActionLeftShift(), "action", "07-e1-00"},
-		{"reset Super B to default", 0x6c, client.Action{7, 0xe8, 0}, client.Action{}, "default", "07-e8-00"},
-		{"reset Super A to explicit default", 0x6d, client.Action{7, 0xe9, 0}, client.Action{7, 0xe9, 0}, "action", "07-e9-00"},
+		{"reset Super B to default", 0xe8, client.Action{}, client.Action{}, "default", "07-e8-00"},
+		{"reset Super A to default", 0xe9, client.Action{}, client.Action{}, "default", "07-e9-00"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			s, f := fixtureService(t)

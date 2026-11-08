@@ -3,14 +3,13 @@ module github.com/ColinEge/8bd-ultimate-app
 go 1.26.4
 
 require (
-	github.com/ColinEge/8bd-ultimate-api v0.0.0-20261108093900-490cfc7f7cb0
-	github.com/wailsapp/wails/v2 v2.17.1
+	github.com/ColinEge/8bd-ultimate-api v0.0.0-20261108120325-c734af9e5906
+	github.com/wailsapp/wails/v2 v2.16.0
 )
 
 require (
 	git.sr.ht/~jackmordaunt/go-toast/v2 v2.0.3 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.16 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.2.4 // indirect
 	github.com/google/gousb v1.1.3 // indirect

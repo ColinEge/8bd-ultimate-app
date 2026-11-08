@@ -97,8 +97,8 @@ export const typingRows: Key[][] = [
         { id: "0x66", colSpan: 1.25 }, // Left Alt
         { id: "0x2c", colSpan: 6.5 }, // Space
         { id: "0x6a", colSpan: 1.25 }, // Alt
-        { id: "", colSpan: 1.25 }, // Super B (unsupported)
-        { id: "", colSpan: 1.25 }, // Super A (unsupported)
+        { id: "0xe8", colSpan: 1.25 }, // Super B
+        { id: "0xe9", colSpan: 1.25 }, // Super A
         { id: "0x68" }, // Right Ctrl
     ],
 ];
